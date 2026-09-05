@@ -1,20 +1,23 @@
 import { useEffect, useState } from 'react'
-import { fetchProductsWithStats } from '@/services/products'
+import { fetchProductById, recordView } from '@/services/products'
 import type { ProductWithStats } from '@/types'
 
-export function useProducts() {
-  const [products, setProducts] = useState<ProductWithStats[]>([])
+export function useProduct(id: string | undefined) {
+  const [product, setProduct] = useState<ProductWithStats | null>(null)
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
+    if (!id) return
     let cancelled = false
-    fetchProductsWithStats()
-      .then((data) => { if (!cancelled) setProducts(data) })
-      .catch((err) => { if (!cancelled) setError(err.message) })
-      .finally(() => { if (!cancelled) setLoading(false) })
+    setLoading(true)
+    fetchProductById(id).then((data) => {
+      if (cancelled) return
+      setProduct(data)
+      setLoading(false)
+      if (data) recordView(id)
+    })
     return () => { cancelled = true }
-  }, [])
+  }, [id])
 
-  return { products, loading, error }
+  return { product, loading }
 }
