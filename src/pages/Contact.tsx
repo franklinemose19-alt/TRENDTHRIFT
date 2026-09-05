@@ -3,6 +3,9 @@ import { useSettings } from '@/hooks/useSettings'
 
 export default function Contact() {
   const settings = useSettings()
+  const waLink = settings?.whatsapp_number
+    ? 'https://wa.me/' + settings.whatsapp_number.replace(/[^\d]/g, '')
+    : ''
 
   return (
     <div className="mx-auto max-w-md px-5 py-16 text-center">
@@ -11,9 +14,9 @@ export default function Contact() {
         The fastest way to reach us is WhatsApp — ask about a piece, sizing, or delivery.
       </p>
 
-      {settings?.whatsapp_number && (
+      {waLink && (
         
-          href={`https://wa.me/${settings.whatsapp_number.replace(/[^\d]/g, '')}`}
+          href={waLink}
           target="_blank"
           rel="noreferrer"
           className="mt-8 inline-flex items-center gap-2 rounded-full bg-moss px-6 py-3 text-sm font-medium text-paper"
