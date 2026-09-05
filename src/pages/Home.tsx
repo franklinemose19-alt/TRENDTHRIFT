@@ -16,6 +16,10 @@ export default function Home() {
   const latest = available.slice(0, 4)
   const popular = useMemo(() => sortProducts(available, 'most_liked').slice(0, 4), [available])
 
+  const waLink = settings?.whatsapp_number
+    ? 'https://wa.me/' + settings.whatsapp_number.replace(/[^\d]/g, '')
+    : ''
+
   return (
     <div>
       <section className="mx-auto max-w-6xl px-5 pb-12 pt-14 md:pt-20">
@@ -25,7 +29,7 @@ export default function Home() {
               Thrifted pieces, chosen one at a time.
             </h1>
             <p className="mt-4 max-w-sm text-stone">
-              Every item in our showroom is a single find — no restocks, no duplicates. Browse the
+              Every item in our showroom is a single find - no restocks, no duplicates. Browse the
               collection, then message us to make it yours.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
@@ -35,9 +39,9 @@ export default function Home() {
               >
                 Browse the collection
               </Link>
-              {settings?.whatsapp_number && (
-                
-                  href={`https://wa.me/${settings.whatsapp_number.replace(/[^\d]/g, '')}`}
+              {waLink && (
+                <a
+                  href={waLink}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center justify-center gap-2 rounded-full border border-ink/15 px-6 py-3 text-sm font-medium text-ink hover:border-ink/30"
@@ -59,7 +63,7 @@ export default function Home() {
       <section className="border-y border-ink/10 py-6">
         <div className="mx-auto flex max-w-6xl gap-6 overflow-x-auto px-5 text-sm">
           {categories.map((c) => (
-            <Link key={c} to={`/shop?category=${encodeURIComponent(c)}`} className="whitespace-nowrap text-stone hover:text-ink">
+            <Link key={c} to={'/shop?category=' + encodeURIComponent(c)} className="whitespace-nowrap text-stone hover:text-ink">
               {c}
             </Link>
           ))}
